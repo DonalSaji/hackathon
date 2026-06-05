@@ -22,10 +22,10 @@ class PermissionSeeder extends Seeder
             ['name' => 'delete.roles', 'guard_name' => 'web', 'group_name' => 'roles'],
             ['name' => 'edit.rolesinpermission', 'guard_name' => 'web', 'group_name' => 'roles'],
 
-            ['name' => 'all.admin', 'guard_name' => 'web', 'group_name' => 'users'],
-            ['name' => 'add.admin', 'guard_name' => 'web', 'group_name' => 'users'],
-            ['name' => 'edit.admin', 'guard_name' => 'web', 'group_name' => 'users'],
-            ['name' => 'delete.admin', 'guard_name' => 'web', 'group_name' => 'users'],
+            ['name' => 'all.users', 'guard_name' => 'web', 'group_name' => 'users'],
+            ['name' => 'add.users', 'guard_name' => 'web', 'group_name' => 'users'],
+            ['name' => 'edit.users', 'guard_name' => 'web', 'group_name' => 'users'],
+            ['name' => 'delete.users', 'guard_name' => 'web', 'group_name' => 'users'],
 
 
             ['name' => 'menu.dashboard', 'guard_name' => 'web', 'group_name' => 'menu'],

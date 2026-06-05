@@ -63,7 +63,7 @@
                 <div class="card-body">
                     <div class="profile-image-wrapper">
                         <img id="profileImage"
-                            src="{{ $user->profile && $user->profile->avatar ? route('files.view', $user->profile->avatar) : asset('users/avatar.jpg') }}"
+                            src="{{ $user->profile && $user->profile->avatar ? route('files.view', $user->profile->avatar) : asset('assets/images/users/avatar.jpg') }}"
                             class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
                         <div class="overlay">
                             <input type="file" id="avatarInput" class="form-control-file" accept=".jpg, .jpeg, .png"

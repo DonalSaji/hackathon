@@ -44,7 +44,7 @@
         <div class="col-sm-7 mx-auto">
             <div class="card widget-flat">
                 <div class="card-body">
-                    <form id="myForm" method="POST" action="{{ route('store.admin') }}" class="forms-sample">
+                    <form id="myForm" method="POST" action="{{ route('store.users') }}" class="forms-sample">
                         @csrf
                         <div class="row">
                             <!-- Admin Name -->
@@ -148,7 +148,7 @@
                 submitButton.prop('disabled', true);
 
                 $.ajax({
-                    url: "{{ route('store.admin') }}",
+                    url: "{{ route('store.users') }}",
                     type: 'POST',
                     data: formData,
                     success: function(response) {

@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Recurrence extends Model
+class NotificationSetting extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'task_id',
-        'repeat_every',
-        'custom_days',
-        'next_due_date',
+        'user_id',
+        'notification_groups',
     ];
 }

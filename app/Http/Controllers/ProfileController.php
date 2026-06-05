@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
-use App\Models\User;
-use Illuminate\View\View;
-use App\Models\UserProfile;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\NotificationSetting;
+use App\Models\User;
+use App\Models\UserProfile;
+use Exception;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 
 class ProfileController extends Controller
@@ -23,12 +24,13 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        // $user = Auth::user();
+        $user = Auth::user();
+        \Log::info($user);
         // activity()->event('access')->withProperties($user)->log('Accessed edit profile page');
-        // return view('backend.profile.profile', compact('user'));
-        return view('backend.profile.profile', [
-            'user' => $request->user(),
-        ]);
+        return view('backend.profile.profile', compact('user'));
+        // return view('backend.profile.profile', [
+        //     'user' => $request->user(),
+        // ]);
     }
 
     public function uploadAvatar(Request $request)
@@ -149,5 +151,59 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function NotificationSettings()
+    {
+        $user = User::with('roles.permissions')->find(Auth::id());
+
+        $permissionGroups = collect();
+
+        foreach ($user->roles as $role) {
+            foreach ($role->permissions as $permission) {
+                $permissionGroups->push($permission->group_name);
+            }
+        }
+        $Notifications_groups = $permissionGroups->unique()->values();
+
+        // ✅ Get saved groups as array
+        $uncheckedNotifications = NotificationSetting::where('user_id', $user->id)
+            ->value('notification_groups');
+
+        $uncheckedNotifications = $uncheckedNotifications
+            ? json_decode($uncheckedNotifications, true)
+            : [];
+
+        // activity()->event('access')->withProperties([$role,$permissions,$permission_groups])->log('Accessed roles in permission page');
+        return view('backend.profile.notification-settings', compact('user',  'Notifications_groups', 'uncheckedNotifications'));
+    }
+
+    public function updateNotificationSettings(Request $request, $id): RedirectResponse
+    {
+        $validatedData = $request->validate([
+            'notification_groups' => 'nullable|string',
+        ]);
+
+        try {
+            $user = User::find($id);
+
+            $notificationSettings = NotificationSetting::updateOrCreate(
+                ['user_id' => $id], // Condition to check existing settings
+                [
+                    'notification_groups' => $validatedData['notification_groups'],
+                ]
+            );
+
+            // $user = User::first();
+            // $user->notify(new \App\Notifications\UserAlert("Your notification settings have been updated.", "/notification-settings", $user));
+
+            // activity()->causedBy($user)->withProperties($validatedData)->event('updated')->log('User notification settings updated');
+
+            return Redirect::route('notification.settings')->with('success', 'Notification settings updated successfully!');
+        } catch (Exception $e) {
+            // activity()->event('error')->withProperties($e->getMessage())->log('An error occurred during notification settings update');
+
+            return Redirect::route('notification.settings')->with(['error' => 'An error occurred: ' . $e->getMessage()]);
+        }
     }
 }

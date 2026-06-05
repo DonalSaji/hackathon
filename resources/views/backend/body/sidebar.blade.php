@@ -77,7 +77,7 @@
                                     <a href="{{ route('all.roles') }}">All Roles</a>
                                 </li>
                             @endcan
-                            @can('all.admin')
+                            @can('all.users')
                                 <li>
                                     <a href="{{ route('all.users') }}">Manage User</a>
                                 </li>

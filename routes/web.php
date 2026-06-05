@@ -1,11 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\URPController;
-use App\Http\Controllers\FileController;
-use App\Http\Controllers\TodoController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\InappNotificationController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TodoController;
+use App\Http\Controllers\URPController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,12 +38,28 @@ Route::middleware(['auth'])->group(function () {
         Route::get('file/{filename}', 'viewFile')->where('filename', '.*')->name('files.view');
     });
 
+    Route::controller(InappNotificationController::class)->group(function () {
+        Route::get('/notifications',  'notifications')->name('notifications');
+        Route::post('/readnotifications',  'readNotifications')->name('read.notifications');
+        Route::get('/clearnotifications',  'clearNotifications')->name('clear.notifications');
+
+        //templates
+        Route::get('/notification-templates', 'notificationTemplates')->name('notification.templates')->middleware('can:all.notification.templates');
+        Route::get('/add-notification-template', 'addNotificationTemplate')->name('add.notification.template')->middleware('can:add.notification.templates');
+        Route::post('/store-notification-template', 'storeNotificationTemplate')->name('store.notification.template')->middleware('can:add.notification.templates');
+        Route::get('/edit-notification-template/{id}', 'editNotificationTemplate')->name('edit.notification.template')->middleware('can:edit.notification.templates');
+        Route::post('/update-notification-template/{id}', 'updateNotificationTemplate')->name('update.notification.template')->middleware('can:edit.notification.templates');
+
+        //Pwa Notification
+        Route::post('/subscribe',  'subscribe')->name('subscribe');
+    });
+
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'edit')->name('profile.edit');
         Route::post('/upload-avatar',  'uploadAvatar')->name('upload.avatar');
         Route::post('/profile-update',  'update')->name('profile.update');
-        // Route::get('/notification-settings', 'NotificationSettings')->name('notification.settings');
-        // Route::post('/update-notification-settings/{id}', 'updateNotificationSettings')->name('update.notification.settings');
+        Route::get('/notification-settings', 'NotificationSettings')->name('notification.settings');
+        Route::post('/update-notification-settings/{id}', 'updateNotificationSettings')->name('update.notification.settings');
     });
 
     Route::controller(TodoController::class)->group(function () {
@@ -81,15 +98,11 @@ Route::middleware(['auth'])->group(function () {
 
         //All Users
         Route::get('/all/users', 'AllUser')->name('all.users')->middleware('can:all.users');
-        Route::get('/add/users', 'AddUser')->name('add.admin')->middleware('can:add.admin');
-        Route::post('/store/users', 'StoreUser')->name('store.admin')->middleware('can:add.admin');
-        Route::get('/edit/users/{id}', 'EditUser')->name('edit.admin')->middleware('can:edit.admin');
-        Route::post('/update/users/{id}', 'UpdateUser')->name('update.admin')->middleware('can:edit.admin');
-        Route::post('/delete/users', 'DeleteUser')->name('delete.admin')->middleware('can:delete.admin');
-
-        Route::post('/update-allowed-devices', 'updateAllowedDevices')->name('update.allowed.devices')->middleware('can:edit.admin');
-
-        Route::get('user/{id}/devices', 'getUserDevices')->name('user.devices')->middleware('can:edit.admin');
+        Route::get('/add/users', 'AddUser')->name('add.users')->middleware('can:add.users');
+        Route::post('/store/users', 'StoreUser')->name('store.users')->middleware('can:add.users');
+        Route::get('/edit/users/{id}', 'EditUser')->name('edit.users')->middleware('can:edit.users');
+        Route::post('/update/users/{id}', 'UpdateUser')->name('update.users')->middleware('can:edit.users');
+        Route::post('/delete/users', 'DeleteUser')->name('delete.users')->middleware('can:delete.users');
     });
 });
 

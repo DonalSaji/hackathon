@@ -1,4 +1,5 @@
 import './bootstrap';
+import './reverb-config';
 
 import Alpine from 'alpinejs';
 

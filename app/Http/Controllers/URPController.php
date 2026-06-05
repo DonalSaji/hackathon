@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Role;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Jobs\TriggerNotificationHookJob;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Log;
 use SebastianBergmann\CodeCoverage\Test\TestStatus\Unknown;
+use Spatie\Permission\Models\Permission;
 
 class URPController extends Controller
 {
@@ -281,15 +282,15 @@ class URPController extends Controller
         $role = $user->roles()->select('name')->first();
 
 
-        // TriggerNotificationHookJob::dispatch('create_user', [
-        //     'user_name' => $request->name,
-        //     'user_email' => $request->email,
-        //     'user_mobile' => $request->phone,
-        //     'user_role' => $role->name,
-        //     'user_department' => $dept->name,
-        //     'action' => 'New user created',
-        //     'link' => '/edit/users/' . $user->id,
-        // ]);
+        TriggerNotificationHookJob::dispatch('create_user', [
+            'user_name' => $request->name,
+            'user_email' => $request->email,
+            'user_mobile' => $request->phone,
+            'user_role' => $role->name,
+            'user_department' => "dept->name",
+            'action' => 'New user created',
+            'link' => '/edit/users/' . $user->id,
+        ]);
 
 
         // Log the activity
@@ -348,15 +349,15 @@ class URPController extends Controller
             $role = $user->roles()->select('name')->first();
 
 
-            // TriggerNotificationHookJob::dispatch('update_user', [
-            //     'user_name' => $request->name,
-            //     'user_email' => $request->email,
-            //     'user_mobile' => $request->phone,
-            //     'user_role' => $role->name,
-            //     'user_department' => $dept->name,
-            //     'action' => 'User updated',
-            //     'link' => '/edit/users/' . $user->id,
-            // ]);
+            TriggerNotificationHookJob::dispatch('update_user', [
+                'user_name' => $request->name,
+                'user_email' => $request->email,
+                'user_mobile' => $request->phone,
+                'user_role' => $role->name,
+                'user_department' => "dept->name",
+                'action' => 'User updated',
+                'link' => '/edit/users/' . $user->id,
+            ]);
 
             // Log the activity
             // activity()->performedOn($user)->withProperties($validatedData)->event('updated')->log('User updated');

@@ -9,11 +9,12 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, HasPushSubscriptions;
 
     /**
      * The attributes that are mass assignable.
@@ -85,10 +86,10 @@ class User extends Authenticatable
         return $this->hasMany(User::class, 'addedBy');
     }
 
-    // public function profile()
-    // {
-    //     return $this->hasOne(UserProfile::class, 'user_id', 'id');
-    // }
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class, 'user_id', 'id');
+    }
 
     //User to manage more than one task
     public function todos()

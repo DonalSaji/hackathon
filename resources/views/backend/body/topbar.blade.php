@@ -275,7 +275,7 @@
                  </div>
              </li> --}}
 
-             {{-- <li class="dropdown notification-list">
+             <li class="dropdown notification-list">
                  <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button"
                      aria-haspopup="false" aria-expanded="false">
                      <i class="ri-notification-3-line font-22"></i>
@@ -306,7 +306,7 @@
                          class="dropdown-item text-center text-primary notify-item border-top border-light py-2">
                      </a>
                  </div>
-             </li> --}}
+             </li>
 
 
              {{-- <li class="dropdown notification-list">
@@ -408,10 +408,10 @@
                      </a>
 
                      <!-- item-->
-                     {{-- <a href="{{ route('notification.settings') }}" class="dropdown-item">
+                     <a href="{{ route('notification.settings') }}" class="dropdown-item">
                          <i class="mdi mdi-bell-circle me-1"></i>
                          <span>Notification Settings</span>
-                     </a> --}}
+                     </a>
 
                      {{-- <!-- item-->
                      <a href="javascript:void(0);" class="dropdown-item">

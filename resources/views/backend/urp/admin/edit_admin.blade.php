@@ -44,7 +44,7 @@
         <div class="col-sm-7 mx-auto">
             <div class="card widget-flat">
                 <div class="card-body">
-                    <form id="myForm" method="POST" action="{{ route('update.admin', $user->id) }}"
+                    <form id="myForm" method="POST" action="{{ route('update.users', $user->id) }}"
                         class="forms-sample">
                         @csrf
 
@@ -177,7 +177,7 @@
                 submitButton.prop('disabled', true);
 
                 $.ajax({
-                    url: "{{ route('update.admin', $user->id) }}",
+                    url: "{{ route('update.users', $user->id) }}",
                     type: 'POST',
                     data: formData,
                     success: function(response) {

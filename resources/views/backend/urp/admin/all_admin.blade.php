@@ -205,11 +205,11 @@
         <!-- Start Content-->
         <div class="container-fluid">
 
-            @if (Auth::user()->can('add.admin'))
+            @if (Auth::user()->can('add.users'))
                 <div class="row mt-3">
                     <div class="col-12 text-right" style="z-index:2;">
                         <button type="button" class="btn btn-primary float-end"
-                            onclick="window.location.href='{{ route('add.admin') }}'">
+                            onclick="window.location.href='{{ route('add.users') }}'">
                             <span class="addRolebtn1">Add User</span>
                             <span class="addRolebtn2"><i class="mdi mdi-plus-circle-outline mdi-24px"></i></span>
                         </button>
@@ -238,7 +238,7 @@
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Assigned Role</th>
-                            @canany(['edit.admin', 'delete.admin'])
+                            @canany(['edit.users', 'delete.users'])
                                 <th>Actions</th>
                             @endcanany
 
@@ -254,18 +254,18 @@
                                     <td>{{ $user['email'] }}</td>
                                     <td>{{ $user['phone'] }}</td>
                                     <td>{{ $user['role'] }}</td>
-                                    @canany(['edit.admin', 'delete.admin'])
+                                    @canany(['edit.users', 'delete.users'])
                                         <td>
                                             <div class="d-flex">
-                                                @can('edit.admin')
-                                                    <a href="{{ route('edit.admin', $user['id']) }}" class="editRolebtn me-2"
+                                                @can('edit.users')
+                                                    <a href="{{ route('edit.users', $user['id']) }}" class="editRolebtn me-2"
                                                         data-bs-toggle="tooltip" data-bs-placement="top"
                                                         data-bs-custom-class="info-tooltip" data-bs-title="Edit">
                                                         <i class="mdi mdi-circle-edit-outline mdi-24px"></i>
                                                     </a>
                                                 @endcan
 
-                                                @can('delete.admin')
+                                                @can('delete.users')
                                                     <a href="#" class="delete-user me-2 deleteuserBtn"
                                                         data-id="{{ $user['id'] }}" data-bs-toggle="modal"
                                                         data-bs-target="#delete-alert-modal" data-bs-toggle="tooltip"
@@ -355,7 +355,7 @@
                 // Confirm delete action
                 $('.confirm-delete').on('click', function() {
                     $.ajax({
-                        url: '{{ route('delete.admin') }}',
+                        url: '{{ route('delete.users') }}',
                         type: 'POST',
                         data: {
                             id: deleteUserId,
